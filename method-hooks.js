@@ -164,3 +164,31 @@ MethodHooks.afterMethods = function (dict) {
     });
 };
 
+/**
+ * private function for a create dict for beforeAllMethods & afterAllMethods
+ * @param hookFunction {Hook}
+ */
+MethodHooks._createHookDict = function (hookFunction) {
+  var methodNames = Object.keys(MethodHooks._handlers);
+  var hooks = {};
+  _.each(methodNames, function (name) {
+      hooks[name] = hookFunction;
+  });
+  return hooks;
+}
+
+/**
+ * Add a function to call before all meteor methods
+ * @param hookFunction {Hook}
+ */
+MethodHooks.beforeAllMethods = function (hookFunction) {
+  MethodHooks.beforeMethods(MethodHooks._createHookDict(hookFunction));
+}
+
+/**
+ * Add a function to call after all meteor methods
+ * @param hookFunction {Hook}
+ */
+MethodHooks.afterAllMethods = function (hookFunction) {
+  MethodHooks.afterMethods(MethodHooks._createHookDict(hookFunction));
+}
